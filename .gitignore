@@ -10,3 +10,4 @@ env/
 venv/
 data/ala2
 lightning_logs
+build
