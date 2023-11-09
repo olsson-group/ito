@@ -8,5 +8,7 @@ setup(
         'torch',
         'pytorch_lightning',
         'torch_geometric',
+        'mdshare',
+        'mdtraj',
     ],
 )
