@@ -1,8 +1,9 @@
-import os
 import json
+import os
 from argparse import ArgumentParser
 
 import pytorch_lightning as pl
+from pytorch_lightning.callbacks import ModelCheckpoint
 from torch_geometric.loader import DataLoader
 
 from ito import data
@@ -32,6 +33,8 @@ def main(args):
         default_root_dir=args.path,
         max_epochs=args.epochs,
         gradient_clip_val=1.0,
+        overfit_batches=1,
+        callbacks=[ModelCheckpoint(save_top_k=-1, filename="{epoch}")],
     )
 
     trainer.fit(model, dataloader)
@@ -39,7 +42,6 @@ def main(args):
 
 if __name__ == "__main__":
     parser = ArgumentParser()
-
     # fmt: off
     parser.add_argument("--path",              nargs="?", type=str,   default=".")
     parser.add_argument("--n_features",        nargs="?", type=int,   default=64)
@@ -53,7 +55,5 @@ if __name__ == "__main__":
     parser.add_argument("--indistinguishable", action='store_true')
     parser.add_argument("--unscaled",          action='store_true')
     # fmt: on
-
-    main(parser.parse_args())
 
     main(parser.parse_args())
