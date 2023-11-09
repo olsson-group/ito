@@ -8,3 +8,5 @@ __pycache__/
 .Python
 env/
 venv/
+data/ala2
+lightning_logs
