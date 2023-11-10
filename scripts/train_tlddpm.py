@@ -11,12 +11,18 @@ from ito.model import cpainn, ddpm
 
 
 def main(args):
-    score_model = cpainn.PaiNNTLScore(
-        n_features=args.n_features, max_lag=args.max_lag, diff_steps=args.diff_steps
-    )
+    score_model_class = cpainn.PaiNNTLScore
+    score_model_kwargs = {
+        "n_features": args.n_features,
+        "max_lag": args.max_lag,
+        "diff_steps": args.diff_steps,
+    }
 
     model = ddpm.TLDDPM(
-        score_model=score_model, diffusion_steps=args.diff_steps, lr=args.lr
+        score_model_class,
+        score_model_kwargs=score_model_kwargs,
+        diffusion_steps=args.diff_steps,
+        lr=args.lr,
     )
 
     dataset = data.ALA2Dataset(
