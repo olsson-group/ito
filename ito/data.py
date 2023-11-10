@@ -72,7 +72,22 @@ class ALA2Dataset(StochasticLaggedDataset):
         return {"batch_0": batch_0, "batch_t": batch_t}
 
 
+
 def get_ala2_trajs(path=None, scale=False):
+    filenames = download_ala2_trajs(path)
+
+    topology = mdshare.fetch("alanine-dipeptide-nowater.pdb", path)
+    trajs = [md.load_xtc(fn, topology) for fn in filenames]
+    trajs = [t.center_coordinates().xyz for t in trajs]
+
+    if scale:
+        std = 0.1661689
+        trajs = [t / std for t in trajs]
+
+    return trajs
+
+
+def download_ala2_trajs(path='.'):
     if not path:
         path = "data/ala2/"
     if not os.path.exists(path):
@@ -90,19 +105,10 @@ def get_ala2_trajs(path=None, scale=False):
         for filename in filenames
     ]
 
-    topology = mdshare.fetch("alanine-dipeptide-nowater.pdb", path)
-    trajs = [md.load_xtc(fn, topology) for fn in local_filenames]
-
-    trajs = [t.center_coordinates().xyz for t in trajs]
-
-    if scale:
-        std = 0.1661689
-        trajs = [t / std for t in trajs]
-
-    return trajs
+    return local_filenames
 
 
-def get_ala2_atomnumbers(distinguish=False):
+def get_ala2_atom_numbers(distinguish=False):
     # fmt: off
     ALA2ATOMNUMBERS = [1, 6, 1, 1, 6, 8, 7, 1, 6, 1, 6, 1, 1, 1, 6, 8, 7, 1, 6, 1, 1, 1]
     # fmt: on
