@@ -7,6 +7,8 @@ import torch
 from torch.utils import data
 from torch_geometric.data import Data as GeometricData
 
+from ito import utils
+
 
 class StochasticLaggedDataset(data.Dataset):
     def __init__(self, trajs, max_lag, fixed_lag=False):
@@ -54,23 +56,10 @@ class ALA2Dataset(StochasticLaggedDataset):
 
         super().__init__(trajs, max_lag, fixed_lag=fixed_lag)
 
-    def get_geom_batch(self, x, t_phys):
-        batch = GeometricData(
-            x=x,
-            t_phys=torch.ones_like(self.atom_number) * t_phys,
-            atom_number=self.atom_numbers,
-        )
-
-        return batch
-
     def process(self, x0, xt, t):
-        x0 = torch.Tensor(x0.squeeze())
-        xt = torch.Tensor(xt.squeeze())
-
-        batch_0 = self.get_geom_batch(x0, t)
-        batch_t = self.get_geom_batch(xt, t)
+        batch_0 = utils.get_cond_batch(self.atom_numbers, x0, t)
+        batch_t = utils.get_cond_batch(self.atom_numbers, xt, t)
         return {"batch_0": batch_0, "batch_t": batch_t}
-
 
 
 def get_ala2_trajs(path=None, scale=False):
@@ -87,7 +76,7 @@ def get_ala2_trajs(path=None, scale=False):
     return trajs
 
 
-def download_ala2_trajs(path='.'):
+def download_ala2_trajs(path="."):
     if not path:
         path = "data/ala2/"
     if not os.path.exists(path):
