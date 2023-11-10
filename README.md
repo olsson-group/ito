@@ -1,30 +1,61 @@
-# ITO
-This repository can reproduce the results shown for AlanineDipeptide in the paper "Implicit Transfer Operator Learning: Multiple Time-Resolution Surrogates for Molecular Dynamics" - https://arxiv.org/abs/2305.18046
-
+This repository contains the implementation of the methods and experiments presented in the paper "Implicit Transfer Operator Learning: Multiple Time-Resolution Surrogates for Molecular Dynamics". It focuses on reproducing the results for AlanineDipeptide, showcasing the effectiveness of the proposed approach in molecular dynamics simulations.
 
 ## Installation
+Follow these steps to set up the environment and install the necessary dependencies for ITO.
 
-To install, run:
+### Prerequisites
+Ensure you have the following installed:
+
+```
+Git
+Python 3.8 or higher
+pip (Python package manager)
+```
+
+### Cloning the Repository
+Clone the repository and navigate to the project directory:
 
 ```
 $ git clone https://gitlab.com/matschreiner/ito
 $ cd ito
+```
+
+### Installing Dependencies
+To install the required dependencies, run:
+
+```
 $ make install-{arch}
 ```
 
-Replace {arch} with cpu, cu118, or cu121 dependent on which architecture you will be running on. This will install the package-dependencies as well as collect and install the appropriate wheels for pytorch-scatter, pytorch-sparse, and pytorch and pytorch-cluster used by pytorch-geometric.
+Replace {arch} with your target architecture:
+
+cpu for CPU-only installations.
+cu118 for systems with CUDA 11.8.
+cu121 for systems with CUDA 12.1.
+
+This command will install all package dependencies and the appropriate wheels for pytorch-scatter, pytorch-sparse, pytorch, and pytorch-cluster, which are necessary for pytorch-geometric.
 
 
 ## Usage
-Scripts for training models and sampling trajectories are saved in scripts. 
+This section provides instructions on how to run simulations, train models, and reproduce the results presented in the paper. Examples of command lines and descriptions of available scripts and options are included for ease of use.
 
-To train a model TLDDPM model run 
+Training the TLDDPM Model
+Scripts for training models and generating trajectories are located in the scripts directory.
+
+### Train a Model
+To train a TLDDPM model, use the following command:
 
 ```
 python scripts/train_tlddpm.py
 ```
 
-There are a few arguments available for this training script.
+This script comes with several configurable arguments to customize your training session. To see all available arguments for the training script, run:
+
+```
+python scripts/train_tlddpm.py --help
+```
+
+This command will display the following options:
 
 ```
 optional arguments:
@@ -39,18 +70,56 @@ optional arguments:
   --batch_size BATCH_SIZE
                         Batch size for training.
   --lr LR               Learning rate for the optimizer.
-  --max_lag MAX_LAG     Maximum lag to consider in the ALA2 dataset.
-  --fixed_lag           Enable to use a fixed lag value; disable for variable lag.
+  --max_lag MAX_LAG     Maximum lag to consider in the ALA2 trajectories.
+  --fixed_lag           Enable to use a fixed lag value, disabled by default.
   --indistinguishable   Enable this flag to treat atoms as indistinguishable.
   --unscaled            Use unscaled data. When disabled, data is scaled to unit variance.
 ```
 
+Upon completion of the training, a symbolic link to the model checkpoint with the lowest loss will be created. You can find this link at:
 
+```
+storage/train/{timestamp}/best
+```
 
+### Sampling from model
+After training a model, you can generate trajectories by sampling from it. This is achieved by using the sample_tlddpm.py script.
 
+To sample trajectories from a trained model, execute the following command:
 
+```
+python scripts/sample_tlddpm.py {checkpoint}
+```
 
+Replace {checkpoint} with the path to the checkpoint file of the model you wish to use for sampling. The script comes with several configurable arguments to customize your sampling. To see all available arguments for the training script, run:
 
+```
+python scripts/sample_tlddpm.py --help
+```
 
+This command will display the following options:
 
+```
+positional arguments:
+  checkpoint            Path to the model checkpoint file for generating trajectories.
 
+optional arguments:
+  -h, --help            show this help message and exit
+  --path PATH           Base path for input data and where output samples will be stored.
+  --samples SAMPLES     The number of initial positions to sample trajectories from, processed in parallel.
+  --traj_length TRAJ_LENGTH
+                        The total number of steps (frames) in each generated trajectory.
+  --lag LAG             Temporal lag between consecutive steps (frames) in the generated trajectory.
+  --ode_steps ODE_STEPS
+                        Number of steps for the ODE solver during sampling. Set to 0 for normal denoising.
+  --indistinguishable   Enable this flag to treat atoms as indistinguishable in the model.
+  --unscaled            Enable this flag to use unscaled data. By default, data is scaled to have unit variance.
+```
+
+By default, the trajectories generated by this script are saved in the following location:
+
+```
+storage/samples/{timestamp}/trajectory.npy
+```
+
+The {timestamp} in the directory name is replaced with the timestamp when the sampling process started.
