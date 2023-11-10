@@ -13,12 +13,14 @@ from ito.model import beta_schedule, ema
 class DDPMBase(pl.LightningModule):
     def __init__(
         self,
-        score_model,
+        score_model_class,
+        score_model_kwargs,
         diffusion_steps=1000,
         lr=1e-3,
         beta_scheduler=None,
     ):
         super().__init__()
+        self.save_hyperparameters()
 
         if beta_scheduler is None:
             beta_min = 1e-4
@@ -28,9 +30,9 @@ class DDPMBase(pl.LightningModule):
             )
 
         self.beta_scheduler = beta_scheduler
-        self.score_model = score_model
+        self.score_model = score_model_class(**score_model_kwargs)
 
-        self.save_hyperparameters(ignore=["score_model"])
+
 
         self.register_buffer("betas", self.beta_scheduler.get_betas())
         self.register_buffer("alphas", self.beta_scheduler.get_alphas())
@@ -149,8 +151,8 @@ class DDPMBase(pl.LightningModule):
         epsilon = batch.clone()
         epsilon.x = torch.randn(batch.x.shape, device=self.device)
         return epsilon
-#
-#
+
+
 #  def x_to_geometric(x, batch):
 #      batch.clone()
 #      batch.x = x
@@ -180,8 +182,8 @@ class DDPMBase(pl.LightningModule):
 #              raise ValueError("Loss is NaN")
 #
 #          return loss
-#
-#
+
+
 class TLDDPM(DDPMBase):
     def sample(self, cond_batch, ode_steps=0):
         cond_batch.to(self.device)
