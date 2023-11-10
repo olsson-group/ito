@@ -10,5 +10,6 @@ setup(
         'torch_geometric',
         'mdshare',
         'mdtraj',
+        'tqdm',
     ],
 )

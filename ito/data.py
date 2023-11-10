@@ -46,17 +46,11 @@ class StochasticLaggedDataset(data.Dataset):
 
 
 class ALA2Dataset(StochasticLaggedDataset):
-    def __init__(self, max_lag, distinguish=False, scale=False, fixed_lag=False, path=None):
-
-        # fmt: off
-        ALA2ATOMNUMBERS = [1, 6, 1, 1, 6, 8, 7, 1, 6, 1, 6, 1, 1, 1, 6, 8, 7, 1, 6, 1, 1, 1]
-        # fmt: on
-
-        self.atom_number = torch.tensor(  # pylint: disable=not-callable
-            list(range(len(ALA2ATOMNUMBERS))) if distinguish else ALA2ATOMNUMBERS, dtype=torch.long
-        )
-
-        trajs = self.get_ala2_trajs(path, scale)
+    def __init__(
+        self, max_lag, distinguish=False, scale=False, fixed_lag=False, path=None
+    ):
+        self.atom_numbers = get_ala2_atom_numbers(distinguish=distinguish)
+        trajs = get_ala2_trajs(path, scale)
 
         super().__init__(trajs, max_lag, fixed_lag=fixed_lag)
 
@@ -64,7 +58,7 @@ class ALA2Dataset(StochasticLaggedDataset):
         batch = GeometricData(
             x=x,
             t_phys=torch.ones_like(self.atom_number) * t_phys,
-            atom_number=self.atom_number,
+            atom_number=self.atom_numbers,
         )
 
         return batch
@@ -78,32 +72,42 @@ class ALA2Dataset(StochasticLaggedDataset):
         return {"batch_0": batch_0, "batch_t": batch_t}
 
 
-    @staticmethod
-    def get_ala2_trajs(path=None, scale=False):
-        if not path:
-            path = "data/ala2/"
-        if not os.path.exists(path):
-            print(f"downloading alanine-dipeptide dataset to {path} ...")
+def get_ala2_trajs(path=None, scale=False):
+    if not path:
+        path = "data/ala2/"
+    if not os.path.exists(path):
+        print(f"downloading alanine-dipeptide dataset to {path} ...")
 
-        filenames = [
-            os.path.join(f"alanine-dipeptide-{i}-250ns-nowater.xtc") for i in range(3)
-        ]
+    filenames = [
+        os.path.join(f"alanine-dipeptide-{i}-250ns-nowater.xtc") for i in range(3)
+    ]
 
-        local_filenames = [
-            mdshare.fetch(
-                filename,
-                working_directory=path,
-            )
-            for filename in filenames
-        ]
+    local_filenames = [
+        mdshare.fetch(
+            filename,
+            working_directory=path,
+        )
+        for filename in filenames
+    ]
 
-        topology = mdshare.fetch("alanine-dipeptide-nowater.pdb", path)
-        trajs = [md.load_xtc(fn, topology) for fn in local_filenames]
+    topology = mdshare.fetch("alanine-dipeptide-nowater.pdb", path)
+    trajs = [md.load_xtc(fn, topology) for fn in local_filenames]
 
-        trajs = [t.center_coordinates().xyz for t in trajs]
+    trajs = [t.center_coordinates().xyz for t in trajs]
 
-        if scale:
-            std = 0.1661689
-            trajs = [t / std for t in trajs]
+    if scale:
+        std = 0.1661689
+        trajs = [t / std for t in trajs]
 
-        return trajs
+    return trajs
+
+
+def get_ala2_atomnumbers(distinguish=False):
+    # fmt: off
+    ALA2ATOMNUMBERS = [1, 6, 1, 1, 6, 8, 7, 1, 6, 1, 6, 1, 1, 1, 6, 8, 7, 1, 6, 1, 1, 1]
+    # fmt: on
+    atom_numbers = torch.tensor(  # pylint: disable=not-callable
+        list(range(len(ALA2ATOMNUMBERS))) if distinguish else ALA2ATOMNUMBERS,
+        dtype=torch.long,
+    )
+    return atom_numbers
