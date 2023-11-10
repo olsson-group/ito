@@ -4,10 +4,9 @@ import pytorch_lightning as pl
 import torch
 from torch import nn
 from torch_scatter import scatter
-#  from tqdm import tqdm
-#
-#  from dynamic_diffusion import utils
-from ito.model import beta_schedule, ema
+from tqdm import tqdm
+
+from ito.model import beta_schedule, ema, dpm_solve
 
 
 class DDPMBase(pl.LightningModule):
@@ -87,13 +86,6 @@ class DDPMBase(pl.LightningModule):
             batch.t_diff = torch.ones_like(batch.batch) * t
             batch.x = x
             epsilon_hat = forward_callback(batch)
-            self.log_(
-                {
-                    "sigma_x": batch.x.std(),
-                    "sigma_epsilon_hat": epsilon_hat.x.std(),
-                    "t": t,
-                }
-            )
             return epsilon_hat.x
 
         wrapped_model = dpm_solve.model_wrapper(t_diff_and_forward, ns)
@@ -108,13 +100,6 @@ class DDPMBase(pl.LightningModule):
             for t in tqdm(torch.arange(self.diffusion_steps - 1, 0, -1)):
                 batch.t_diff = torch.ones_like(batch.batch) * t
                 epsilon_hat = forward_callback(batch)
-                self.log_(
-                    {
-                        "sigma_x": batch.x.std(),
-                        "sigma_epsilon_hat": epsilon_hat.x.std(),
-                        "t": t,
-                    }
-                )
                 batch.x = self.denoise_sample(t, batch.x, epsilon_hat)
 
         return batch
