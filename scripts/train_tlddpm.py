@@ -65,17 +65,17 @@ if __name__ == "__main__":
     parser = ArgumentParser()
 
     # fmt: off
-    parser.add_argument("--path", type=str, default="storage", help="Base directory for storing data and training outputs.")
-    parser.add_argument("--n_features", type=int, default=64, help="Number of features for the model.")
-    parser.add_argument("--n_layers", type=int, default=2, help="Number of layers in the model.")
-    parser.add_argument("--epochs", type=int, default=50, help="Number of training epochs.")
-    parser.add_argument("--diff_steps", type=int, default=1000, help="Number of diffusion steps in the model.")
-    parser.add_argument("--batch_size", type=int, default=128, help="Batch size for training.")
-    parser.add_argument("--lr", type=float, default=1e-3, help="Learning rate for the optimizer.")
-    parser.add_argument("--max_lag", type=int, default=1000, help="Maximum lag to consider in the ALA2 dataset.")
-    parser.add_argument("--fixed_lag", action='store_true', help="Enable to use a fixed lag value, disabled by default.")
+    parser.add_argument("--path",              type=str,            default="storage", help="Base directory for storing data and training outputs.")
+    parser.add_argument("--n_features",        type=int,            default=64,        help="Number of features for the model.")
+    parser.add_argument("--n_layers",          type=int,            default=2,         help="Number of layers in the model.")
+    parser.add_argument("--epochs",            type=int,            default=50,        help="Number of training epochs.")
+    parser.add_argument("--diff_steps",        type=int,            default=1000,      help="Number of diffusion steps in the model.")
+    parser.add_argument("--batch_size",        type=int,            default=128,       help="Batch size for training.")
+    parser.add_argument("--lr",                type=float,          default=1e-3,      help="Learning rate for the optimizer.")
+    parser.add_argument("--max_lag",           type=int,            default=1000,      help="Maximum lag to consider in the ALA2 dataset.")
+    parser.add_argument("--fixed_lag",         action='store_true', help="Enable to use a fixed lag value, disabled by default.")
     parser.add_argument("--indistinguishable", action='store_true', help="Enable this flag to treat atoms as indistinguishable.")
-    parser.add_argument("--unscaled", action='store_true', help="Use unscaled data. When disabled, data is scaled to unit variance.")
+    parser.add_argument("--unscaled",          action='store_true', help="Use unscaled data. When disabled, data is scaled to unit variance.")
 
     # fmt: on
 
