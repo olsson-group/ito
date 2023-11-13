@@ -3,15 +3,6 @@ This repository contains the implementation of the methods and experiments prese
 ## Installation
 Follow these steps to set up the environment and install the necessary dependencies for ITO.
 
-### Prerequisites
-Ensure you have the following installed:
-
-```
-Git
-Python 3.8 or higher
-pip (Python package manager)
-```
-
 ### Cloning the Repository
 Clone the repository and navigate to the project directory:
 
