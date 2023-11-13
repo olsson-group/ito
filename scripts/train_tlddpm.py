@@ -61,8 +61,8 @@ def main(args):
         src=os.path.abspath(checkpoint_callback.best_model_path),
         dst=best_checkpoint_link,
     )
-
-    os.unlink(train_dir_link)
+    if os.path.exists(train_dir_link):
+        os.unlink(train_dir_link)
     os.symlink(src=os.path.abspath(train_dir), dst=train_dir_link)
     print(f"best model checkpoint: {best_checkpoint_link}")
 

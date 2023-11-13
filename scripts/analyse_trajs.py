@@ -130,9 +130,9 @@ def get_vamp2(trajs, lag, topology):
 if __name__ == "__main__":
     parser = ArgumentParser()
     # fmt: off
-    parser.add_argument( "--trajs", default="storage/samples/latest", help="Specify the path to the trajectory file containing the trajectories to be analyzed. Default is 'storage/samples/latest'. If the default path is unchanged, ensure that the sampling script has been run prior to analysis.")
-    parser.add_argument( "--root",  default="storage", help="Set the base directory where input data is located and where analysis outputs will be stored. The default directory is 'storage'. Modify this if your data and output directories are different.")
-    parser.add_argument( "--lag",   type=int, default=100, help="Define the temporal lag (in steps) between frames in the ITO trajectory. This value will be used to analyse the reference trajs such that time steps match. The default value is 100.")
+    parser.add_argument( "trajs",           nargs="?",            default="storage/samples/latest", help="Specify the path to the trajectory file containing the trajectories to be analyzed. Default is 'storage/samples/latest'. If the default path is unchanged, ensure that the sampling script has been run prior to analysis.")
+    parser.add_argument( "--root",          default="storage",    help="Set the base directory where input data is located and where analysis outputs will be stored. The default directory is 'storage'. Modify this if your data and output directories are different.")
+    parser.add_argument( "--lag",           type=int,             default=100,                      help="Define the temporal lag (in steps) between frames in the ITO trajectory. This value will be used to analyse the reference trajs such that time steps match. The default value is 100.")
     parser.add_argument( "--no_plot_start", action="store_false", help="Include this flag to prevent marking the starting point of trajectories in the generated plots. By default, the starting point is marked. This should only be used if the trajectories was generated with --init_from_eq")
     # fmt: on
 
