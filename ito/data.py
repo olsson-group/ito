@@ -106,3 +106,10 @@ def get_ala2_atom_numbers(distinguish=False):
         dtype=torch.long,
     )
     return atom_numbers
+
+
+def get_ala2_top(root):
+    path = os.path.join(root, "data/ala2")
+    topology = mdshare.fetch("alanine-dipeptide-nowater.pdb", path)
+    top = md.load(topology).topology
+    return top
