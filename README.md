@@ -142,9 +142,11 @@ python scripts/analyse_trajs.py --help
 which will show the following options
 
 ```
+positional arguments:
+  trajs            Specify the path to the trajectory file containing the trajectories to be analyzed. Default is 'storage/samples/latest'. If the default path is unchanged, ensure
+
 optional arguments:
   -h, --help       show this help message and exit
-  --trajs TRAJS    Specify the path to the trajectory file containing the trajectories to be analyzed. Default is 'storage/samples/latest'. If the default path is unchanged, ensure
                    that the sampling script has been run prior to analysis.
   --root ROOT      Set the base directory where input data is located and where analysis outputs will be stored. The default directory is 'storage'. Modify this if your data and
                    output directories are different.
