@@ -12,10 +12,11 @@ from ito.model import cpainn, ddpm
 
 def main(args):
     score_model_class = cpainn.PaiNNTLScore
-    ala2_path = os.path.join(args.path, "data/ala2")
+    ala2_path = os.path.join(args.root, "data/ala2")
     timestamp = utils.get_timestamp()
-    train_dir = os.path.join(args.path, "train", timestamp)
+    train_dir = os.path.join(args.root, "train", timestamp)
     checkpoint_dir = os.path.join(train_dir, "checkpoints")
+    train_dir_link = os.path.join(args.root, "train", "latest")
     best_checkpoint_link = os.path.join(train_dir, "best")
 
     print(f"saving checkpoints to {checkpoint_dir}")
@@ -56,8 +57,13 @@ def main(args):
     )
 
     trainer.fit(model, dataloader)
+    os.symlink(
+        src=os.path.abspath(checkpoint_callback.best_model_path),
+        dst=best_checkpoint_link,
+    )
 
-    os.symlink(src=os.path.abspath(checkpoint_callback.best_model_path), dst=best_checkpoint_link)
+    os.unlink(train_dir_link)
+    os.symlink(src=os.path.abspath(train_dir), dst=train_dir_link)
     print(f"best model checkpoint: {best_checkpoint_link}")
 
 
@@ -65,7 +71,7 @@ if __name__ == "__main__":
     parser = ArgumentParser()
 
     # fmt: off
-    parser.add_argument("--path",              type=str,            default="storage", help="Base directory for storing data and training outputs.")
+    parser.add_argument("--root",              type=str,            default="storage", help="Base directory for storing data and training outputs.")
     parser.add_argument("--n_features",        type=int,            default=64,        help="Number of features for the model.")
     parser.add_argument("--n_layers",          type=int,            default=2,         help="Number of layers in the model.")
     parser.add_argument("--epochs",            type=int,            default=50,        help="Number of training epochs.")
