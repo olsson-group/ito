@@ -11,5 +11,6 @@ setup(
         'mdshare',
         'mdtraj',
         'tqdm',
+        'deeptime',
     ],
 )
