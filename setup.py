@@ -12,5 +12,6 @@ setup(
         'mdtraj',
         'tqdm',
         'deeptime',
+        'matplotlib'
     ],
 )
