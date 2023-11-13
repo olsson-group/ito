@@ -20,9 +20,11 @@ $ make install-{arch}
 
 Replace {arch} with your target architecture:
 
-cpu for CPU-only installations.\\
-cu118 for systems with CUDA 11.8\\
-cu121 for systems with CUDA 12.1.\\
+cpu for CPU-only installations.
+
+cu118 for systems with CUDA 11.8.
+
+cu121 for systems with CUDA 12.1.
 
 This command will install all package dependencies and the appropriate wheels for pytorch-scatter, pytorch-sparse, pytorch, and pytorch-cluster, which are necessary for pytorch-geometric.
 
