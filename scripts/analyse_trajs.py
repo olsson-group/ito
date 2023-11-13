@@ -37,7 +37,7 @@ def main(args):
     phi, psi = compute_dihedral_angles(np.concatenate(trajs), topology)
     phi_ref, psi_ref = compute_dihedral_angles(np.concatenate(ref_trajs), topology)
 
-    fig, ax = plt.subplots(1, 2, figsize=(10, 4))
+    _, ax = plt.subplots(1, 2, figsize=(10, 4))
 
     plot_marginal(ax[0], phi)
     plot_marginal(ax[0], phi_ref, label="MD")
@@ -53,21 +53,17 @@ def main(args):
         ax[1].vlines(psi[0], 0, 1, linestyle="--", color="k", label="Start")
 
     ax[1].legend()
-
     plt.savefig(os.path.join(analysis_dir, "marginals.pdf"))
 
-
-    fig, ax = plt.subplots(figsize=(5, 4))
+    _, ax = plt.subplots(figsize=(5, 4))
     plt.plot(phi, psi, ".", alpha=0.1, label="ITO")
     ax.set_xlabel("Phi")
     ax.set_ylabel("Psi")
     if not args.no_plot_start:
-        plt.plot(phi[0], psi[0], "k", marker='x', label="Start")
-    
+        plt.plot(phi[0], psi[0], "k", marker="x", label="Start")
+
     ax.legend()
-
     plt.savefig(os.path.join(analysis_dir, "ramachandran.pdf"))
-
     plt.show()
 
 
@@ -134,11 +130,10 @@ def get_vamp2(trajs, lag, topology):
 if __name__ == "__main__":
     parser = ArgumentParser()
     # fmt: off
-    parser.add_argument( "--trajs", default="/Users/jamas/phd/research/dynamic_diffusion/results/ala2_vampgaps/multiscalelag_100/v900/80refia7/sample_231025.102956/samples.npy",)
-    #  parser.add_argument( "--trajs", default="storage/samples/latest")
-    parser.add_argument( "--root",  type=str, default="storage")
-    parser.add_argument( "--lag",   type=int, default=100)
-    parser.add_argument( "--no_plot_start", action="store_false")
+    parser.add_argument( "--trajs", default="storage/samples/latest", help="Specify the path to the trajectory file containing the trajectories to be analyzed. Default is 'storage/samples/latest'. If the default path is unchanged, ensure that the sampling script has been run prior to analysis.")
+    parser.add_argument( "--root",  default="storage", help="Set the base directory where input data is located and where analysis outputs will be stored. The default directory is 'storage'. Modify this if your data and output directories are different.")
+    parser.add_argument( "--lag",   type=int, default=100, help="Define the temporal lag (in steps) between frames in the ITO trajectory. This value will be used to analyse the reference trajs such that time steps match. The default value is 100.")
+    parser.add_argument( "--no_plot_start", action="store_false", help="Include this flag to prevent marking the starting point of trajectories in the generated plots. By default, the starting point is marked. This should only be used if the trajectories was generated with --init_from_eq")
     # fmt: on
 
     main(parser.parse_args())
