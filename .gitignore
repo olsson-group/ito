@@ -11,3 +11,5 @@ venv/
 data/ala2
 lightning_logs
 build
+storage/analysis
+storage
