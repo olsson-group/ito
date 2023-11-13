@@ -1,4 +1,4 @@
-This repository contains the implementation of the methods and experiments presented in the paper "Implicit Transfer Operator Learning: Multiple Time-Resolution Surrogates for Molecular Dynamics". Reproducing results for AlanineDipeptide.
+This repository contains an implementation of the methods and experiments presented in the paper "Implicit Transfer Operator Learning: Multiple Time-Resolution Surrogates for Molecular Dynamics", reproducing results for Alanine Dipeptide.
 
 ## Installation
 Follow these steps to set up the environment and install the necessary dependencies for ITO.
@@ -20,9 +20,9 @@ $ make install-{arch}
 
 Replace {arch} with your target architecture:
 
-cpu for CPU-only installations.
-cu118 for systems with CUDA 11.8.
-cu121 for systems with CUDA 12.1.
+cpu for CPU-only installations.\\
+cu118 for systems with CUDA 11.8\\
+cu121 for systems with CUDA 12.1.\\
 
 This command will install all package dependencies and the appropriate wheels for pytorch-scatter, pytorch-sparse, pytorch, and pytorch-cluster, which are necessary for pytorch-geometric.
 
