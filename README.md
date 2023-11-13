@@ -58,7 +58,7 @@ This command will display the following options:
 ```
 optional arguments:
   -h, --help            show this help message and exit
-  --path PATH           Base directory for storing data and checkpoints.
+  --root ROOT           Base directory for storing data and checkpoints.
   --n_features N_FEATURES
                         Number of features for the score model.
   --n_layers N_LAYERS   Number of layers in the score model.
@@ -108,7 +108,7 @@ positional arguments:
 
 optional arguments:
   -h, --help            show this help message and exit
-  --path PATH           Base path for input data and where output samples will be stored.
+  --root ROOT           Base path for input data and where output samples will be stored.
   --samples SAMPLES     The number of initial positions to sample trajectories from, processed in parallel.
   --traj_length TRAJ_LENGTH
                         The total number of steps (frames) in each generated trajectory.
@@ -132,6 +132,44 @@ storage/samples/latest
 
 
 ### Analyzing trajectory data
+Before running the analysis, ensure that you have already generated trajectories using the sample_tlddpm.py script as described in the Sampling from model section. 
+
+To run the analysis script execute the following command  
+
+```
+python scripts/analyze.py
+```
+
+This will automatically fetch the last generated trajectory. otherwise use the --traj argument to specify a path. The available flags and kw args can be seen by running 
+
+```
+python scripts/analyse_trajs.py --help
+```
+
+which will show the following options
+
+```
+optional arguments:
+  -h, --help       show this help message and exit
+  --trajs TRAJS    Specify the path to the trajectory file containing the trajectories to be analyzed. Default is 'storage/samples/latest'. If the default path is unchanged, ensure
+                   that the sampling script has been run prior to analysis.
+  --root ROOT      Set the base directory where input data is located and where analysis outputs will be stored. The default directory is 'storage'. Modify this if your data and
+                   output directories are different.
+  --lag LAG        Define the temporal lag (in steps) between frames in the ITO trajectory. This value will be used to analyse the reference trajs such that time steps match. The
+                   default value is 100.
+  --no_plot_start  Include this flag to prevent marking the starting point of trajectories in the generated plots. By default, the starting point is marked. This should only be
+                   used if the trajectories was generated with --init_from_eq
+```
+
+Running the script will calculate the VAMP2-scores of the trajectories as well as VAMP2-scores of the reference trajectories, calculated with the appropriate lag. 
+It will also plot and save marginal plots of dihedral angles compared with reference data as well as ramachandran of samples.
+
+
+
+
+
+
+
 
 
 
