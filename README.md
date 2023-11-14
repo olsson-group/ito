@@ -1,4 +1,5 @@
-This repository contains an implementation of the methods and experiments presented in the paper "Implicit Transfer Operator Learning: Multiple Time-Resolution Surrogates for Molecular Dynamics", reproducing results for Alanine Dipeptide.
+This repository contains an implementation of the methods and experiments presented in the paper ["Implicit Transfer Operator Learning: Multiple Time-Resolution Surrogates for Molecular Dynamics"](https://openreview.net/forum?id=1kZx7JiuA2&noteId=LH8F2ohaS0), reproducing results for Alanine Dipeptide.
+
 
 ## Installation
 Follow these steps to set up the environment and install the necessary dependencies for ITO.
@@ -31,6 +32,8 @@ This command will install all package dependencies and the appropriate wheels fo
 
 ## Usage
 This section provides instructions on how to run simulations, train models, and reproduce the results presented in the paper. 
+
+![Alt text](./assets/ito_cln_025.gif)
 
 
 ### Train a TLDDPM
@@ -168,3 +171,14 @@ It will also plot and save marginal plots of dihedral angles compared with refer
 
 
 
+To cite this work, please use the bibtex: 
+```
+@inproceedings{
+    schreiner2023implicit,
+    title={Implicit Transfer Operator Learning: Multiple Time-Resolution Models for Molecular Dynamics},
+    author={Mathias Schreiner and Ole Winther and Simon Olsson},
+    booktitle={Thirty-seventh Conference on Neural Information Processing Systems},
+    year={2023},
+    url={https://openreview.net/forum?id=1kZx7JiuA2}
+}
+```
