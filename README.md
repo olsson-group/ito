@@ -1,5 +1,7 @@
-This repository contains an implementation of the methods and experiments presented in the paper ["Implicit Transfer Operator Learning: Multiple Time-Resolution Surrogates for Molecular Dynamics"](https://openreview.net/forum?id=1kZx7JiuA2&noteId=LH8F2ohaS0), reproducing results for Alanine Dipeptide.
+This repository contains an implementation of the methods and experiments presented in the paper ["Implicit Transfer Operator Learning: Multiple Time-Resolution Surrogates for Molecular Dynamics"](https://openreview.net/forum?id=1kZx7JiuA2&noteId=LH8F2ohaS0), reproducing results for Alanine Dipeptide. To replicate the results for fast-folding proteins, contact the authors of ["How Fast-Folding Proteins Fold"](https://www.science.org/doi/10.1126/science.1208351) to request access to the relevant data.
 
+![Simulation of Chignolin](./assets/ito_cln_025.gif)
+Animation of a simulation of Chignolin with the ITO framework, aligning it with an image of the folded protein in the background for reference. 
 
 ## Installation
 Follow these steps to set up the environment and install the necessary dependencies for ITO.
@@ -32,8 +34,6 @@ This command will install all package dependencies and the appropriate wheels fo
 
 ## Usage
 This section provides instructions on how to run simulations, train models, and reproduce the results presented in the paper. 
-
-![Alt text](./assets/ito_cln_025.gif)
 
 
 ### Train a TLDDPM
