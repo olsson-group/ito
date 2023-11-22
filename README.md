@@ -1,6 +1,7 @@
 This repository contains an implementation of the methods and experiments presented in the paper ["Implicit Transfer Operator Learning: Multiple Time-Resolution Surrogates for Molecular Dynamics"](https://openreview.net/forum?id=1kZx7JiuA2&noteId=LH8F2ohaS0), reproducing results for Alanine Dipeptide. To replicate the results for fast-folding proteins, contact the authors of ["How Fast-Folding Proteins Fold"](https://www.science.org/doi/10.1126/science.1208351) to request access to the relevant data.
 
 ![Simulation of Chignolin](./assets/ito_cln_025.gif)
+
 Animation of a simulation of Chignolin with the ITO framework, aligning it with an image of the folded protein in the background for reference. 
 
 ## Installation
@@ -10,7 +11,7 @@ Follow these steps to set up the environment and install the necessary dependenc
 Clone the repository and navigate to the project directory:
 
 ```
-$ git clone https://gitlab.com/matschreiner/ito
+$ git clone https://github.com/olsson-group/ito
 $ cd ito
 ```
 
@@ -29,7 +30,7 @@ cu118 for systems with CUDA 11.8.
 
 cu121 for systems with CUDA 12.1.
 
-This command will install all package dependencies and the appropriate wheels for pytorch-scatter, pytorch-sparse, pytorch, and pytorch-cluster, which are necessary for pytorch-geometric.
+This command will install all package dependencies and the appropriate wheels for pytorch-scatter, pytorch-sparse, pytorch, and pytorch-cluster, which are architecture-specific dependencies for pytorch-geometric.
 
 
 ## Usage
@@ -71,11 +72,12 @@ optional arguments:
 ```
 
 Upon completion of the training, a symbolic link to the model checkpoint with the lowest loss will be created at:
+
 ```
 storage/train/{timestamp}/best
 ```
 
-And a symlink to the directory for the train-session will be created at 
+And a symlink to the directory for the latest train-session, including all checkpoints and arguments used for the run, will be created at 
 
 ```
 storage/train/latest/
@@ -93,6 +95,7 @@ python scripts/sample_tlddpm.py {checkpoint}
 By default, if left blank, the last trained model will be used.
 
 Replace {checkpoint} with the path to the checkpoint file of the model you wish to use for sampling. The script comes with several arguments to customize sampling. To see all available run:
+
 ```
 python scripts/sample_tlddpm.py --help
 ```
@@ -161,14 +164,6 @@ optional arguments:
 
 Running the script will calculate the VAMP2-scores of the trajectories as well as VAMP2-scores of the reference trajectories, calculated with the appropriate lag. 
 It will also plot and save marginal plots of dihedral angles compared with reference data as well as ramachandran of samples.
-
-
-
-
-
-
-
-
 
 
 To cite this work, please use the bibtex: 
