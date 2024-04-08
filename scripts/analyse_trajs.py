@@ -102,7 +102,7 @@ def compute_dihedral_angles(traj, topology):
 
 
 def featurize_trajs(trajs, topology):
-    featurized_trajs = np.stack(featurize_traj(traj, topology) for traj in trajs)
+    featurized_trajs = np.stack([featurize_traj(traj, topology) for traj in trajs])
     nan_mask = np.isnan(featurized_trajs).any(axis=(1, 2))
 
     return featurized_trajs[~nan_mask]

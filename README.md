@@ -136,10 +136,10 @@ storage/samples/latest
 To run the analysis script on a trajectory execute the following command  
 
 ```
-python scripts/analyze.py {trajectory_path}
+python scripts/analyse_trajs.py {trajectory_path}
 ```
 
-This will automatically fetch the last generated trajectory. otherwise use the --traj argument to specify a path. The available flags and kw args can be seen by running 
+The available flags and kw args can be seen by running 
 
 ```
 python scripts/analyse_trajs.py --help
@@ -149,17 +149,16 @@ which will show the following options
 
 ```
 positional arguments:
-  trajs            Specify the path to the trajectory file containing the trajectories to be analyzed. Default is 'storage/samples/latest'. If the default path is unchanged, ensure
+  trajs            Specify the path to the trajectory file containing the trajectories to be analyzed. Default is 'storage/samples/latest'. If the default path is unchanged, ensure that the sampling
+                   script has been run prior to analysis.
 
-optional arguments:
+options:
   -h, --help       show this help message and exit
-                   that the sampling script has been run prior to analysis.
-  --root ROOT      Set the base directory where input data is located and where analysis outputs will be stored. The default directory is 'storage'. Modify this if your data and
-                   output directories are different.
-  --lag LAG        Define the temporal lag (in steps) between frames in the ITO trajectory. This value will be used to analyse the reference trajs such that time steps match. The
-                   default value is 100.
-  --no_plot_start  Include this flag to prevent marking the starting point of trajectories in the generated plots. By default, the starting point is marked. This should only be
-                   used if the trajectories was generated with --init_from_eq
+  --root ROOT      Set the base directory where input data is located and where analysis outputs will be stored. The default directory is 'storage'. Modify this if your data and output directories are
+                   different.
+  --lag LAG        Define the temporal lag (in steps) between frames in the ITO trajectory. This value will be used to analyse the reference trajs such that time steps match. The default value is 100.
+  --no_plot_start  Include this flag to prevent marking the starting point of trajectories in the generated plots. By default, the starting point is marked. This should only be used if the trajectories
+                   was generated with --init_from_eq
 ```
 
 Running the script will calculate the VAMP2-scores of the trajectories as well as VAMP2-scores of the reference trajectories, calculated with the appropriate lag. 
